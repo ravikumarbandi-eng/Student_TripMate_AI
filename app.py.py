@@ -19,6 +19,11 @@ if "student_name" not in st.session_state:
 # After login
 student_name = st.session_state.student_name
 
+# **Display project title & tagline even after login**
+st.markdown("## 🎓 Student TripMate AI ✈️")
+st.markdown("_Plan affordable and fun trips anywhere — made easy for students by AI!_")
+st.markdown("---")
+
 # Sidebar
 st.sidebar.title(f"👤 {student_name}")
 st.sidebar.header("Make Your Trip ✈️")
