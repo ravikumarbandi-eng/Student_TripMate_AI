@@ -1,4 +1,6 @@
 # 🎓 Student TripMate AI ✈️
+[![Open in Streamlit](https://img.shields.io/badge/Run%20App-Streamlit-blue?logo=streamlit)]([(https://studenttripmateai-bandiravikumar88.streamlit.app/)])
+
 
 **Project Description:**  
 Student TripMate AI is an AI-powered travel planner designed specifically for students. It generates personalized travel itineraries based on the city, number of days, budget, and preferences. The app also saves previous itineraries individually for each student, enabling easy reference.
@@ -200,3 +202,4 @@ pip install -r requirements.txt
 5. **Previous trips** → saved per student → last 3 trips displayed.  
 6. **Individual storage** → JSON file for each student ensures privacy.  
 7. **Deployment** → Run locally with Streamlit or use Pyngrok for public access.
+
