@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from ai_client import generate_itinerary
 import json
 
-# Load API key if local
+# Load API key for local testing (optional)
 if os.path.exists(".env"):
     load_dotenv()
 
@@ -13,12 +13,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Header: Project Title & Tagline ---
-header_col1, header_col2, header_col3 = st.columns([1, 4, 1])
-with header_col2:
-    st.markdown("<h1 style='text-align:center;'>🎓 Student TripMate AI ✈️</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center; font-size:16px;'>Plan affordable and fun trips anywhere — made easy for students by AI!</p>", unsafe_allow_html=True)
-
+# --- Project Title & Tagline (Always visible) ---
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.markdown("## 🎓 Student TripMate AI ✈️", unsafe_allow_html=True)
+    st.markdown("_Plan affordable and fun trips anywhere — made easy for students by AI!_")
 st.markdown("---")
 
 # --- Student login by name ---
@@ -29,18 +28,19 @@ if not st.session_state.student_name:
     name_input = st.text_input("Enter your name to start your personalized trip planner:")
     if name_input:
         st.session_state.student_name = name_input
-        st.experimental_rerun()
+        st.experimental_rerun()  # Rerun to remove input box after login
 else:
-    # Display username top-left with icon
-    st.markdown(f"<div style='position: fixed; top: 10px; left: 10px; font-weight:bold; font-size:16px;'>👤 {st.session_state.student_name}</div>", unsafe_allow_html=True)
+    # Display username at top-left with user icon
+    st.markdown(f"<div style='position: absolute; top: 10px; left: 10px; font-weight:bold;'>👤 {st.session_state.student_name}</div>", unsafe_allow_html=True)
 
-# Stop execution until name is entered
+# Stop here until user enters name
 if not st.session_state.student_name:
     st.stop()
 
-# --- Internal storage per student ---
+# --- Internal storage file per student ---
 history_file = f"{st.session_state.student_name}_history.json"
 
+# Load previous itineraries
 if "history" not in st.session_state:
     if os.path.exists(history_file):
         with open(history_file, "r") as f:
@@ -48,7 +48,7 @@ if "history" not in st.session_state:
     else:
         st.session_state.history = []
 
-# --- Sidebar for trip planning ---
+# --- Sidebar for trip inputs ---
 st.sidebar.header("Plan Your Trip ✍️")
 city = st.sidebar.text_input("Enter city name:")
 days = st.sidebar.number_input("Number of days:", min_value=1, max_value=30, value=3)
@@ -91,4 +91,3 @@ with tab2:
                 st.markdown("---")
     else:
         st.write("No previous itineraries found.")
-
