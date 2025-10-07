@@ -1,5 +1,5 @@
 # 🎓 Student TripMate AI ✈️
-[![Open in Streamlit](https://img.shields.io/badge/Run%20App-Streamlit-blue?logo=streamlit)]([(https://studenttripmateai-bandiravikumar88.streamlit.app/)])
+[![Open in Streamlit](https://img.shields.io/badge/Run%20App-Streamlit-blue?logo=streamlit)](https://studenttripmateai-bandiravikumar88.streamlit.app/)
 
 
 **Project Description:**  
@@ -202,4 +202,5 @@ pip install -r requirements.txt
 5. **Previous trips** → saved per student → last 3 trips displayed.  
 6. **Individual storage** → JSON file for each student ensures privacy.  
 7. **Deployment** → Run locally with Streamlit or use Pyngrok for public access.
+
 
