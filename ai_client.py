@@ -1,49 +1,33 @@
-# ai_client.py
-from google import genai
 import os
+import time
 from dotenv import load_dotenv
+from google import genai
 
-# Load the .env file for the API key
+# Load API key
 load_dotenv()
-
-# Get the Gemini API key from environment
 api_key = os.getenv("GEMINI_API_KEY")
-
-# Validate the key
-if not api_key:
-    raise ValueError("❌ GEMINI_API_KEY not found. Please set it in your .env file or Streamlit secrets.")
-
-# Initialize the Gemini client
 client = genai.Client(api_key=api_key)
 
-def generate_itinerary(city, days, budget, preferences=""):
-    """
-    Generates a travel itinerary using the Gemini model.
-    
-    Args:
-        city (str): Destination city name.
-        days (int): Number of travel days.
-        budget (int): Total trip budget in ₹.
-        preferences (str): Optional user preferences like adventure, food, etc.
-
-    Returns:
-        str: AI-generated travel plan.
-    """
-
+def generate_itinerary(city, days, budget, preferences):
     prompt = f"""
-    You are an expert student travel planner.
-    Create a detailed {days}-day itinerary for {city} with a total budget of ₹{budget}.
-    Focus on affordable and educational experiences.
-    Student preferences: {preferences}.
-    Format clearly with day-wise breakdown and travel tips.
+    Create a {days}-day travel itinerary for {city} within a budget of ₹{budget}.
+    Preferences: {preferences}
+    Make the output structured and student-friendly.
     """
 
-    # Generate content using Gemini
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
-        return response.text
-    except Exception as e:
-        return f"⚠️ Error generating itinerary: {str(e)}"
+    # Retry logic for 503 errors (model overloaded)
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model="gemini-1.5-flash",  # more stable than gemini-2.5-flash
+                contents=prompt
+            )
+            return response.text
+        
+        except Exception as e:
+            if "503" in str(e):
+                time.sleep(3)  # wait and retry
+                continue
+            return f"⚠️ Error generating itinerary: {e}"
+
+    return "⚠️ The AI service is currently busy. Please try again after a few minutes."
