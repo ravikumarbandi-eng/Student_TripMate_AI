@@ -19,7 +19,7 @@ def generate_itinerary(city, days, budget, preferences):
     for attempt in range(3):
         try:
             response = client.models.generate_content(
-                model="models/gemini-1.5-flash-latest",  # more stable than gemini-2.5-flash
+                model="gemini-2.5-flash",  # more stable than gemini-2.5-flash
                 contents=prompt
             )
             return response.text
@@ -31,4 +31,5 @@ def generate_itinerary(city, days, budget, preferences):
             return f"⚠️ Error generating itinerary: {e}"
 
     return "⚠️ The AI service is currently busy. Please try again after a few minutes."
+
 
